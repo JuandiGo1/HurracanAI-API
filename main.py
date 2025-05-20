@@ -4,6 +4,7 @@ import joblib
 import numpy as np
 import pandas as pd
 from fastapi import HTTPException
+import uvicorn
 
 # Cargar modelo entrenado
 modelo = joblib.load("model/modelo_huracanes.pkl")
@@ -104,5 +105,5 @@ def predecir_intensidad(datos: DatosHuracan):
 
 
 
-# Ejecutar la app con el comando:
-# uvicorn main:app --reload
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
