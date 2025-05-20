@@ -5,12 +5,22 @@ import numpy as np
 import pandas as pd
 from fastapi import HTTPException
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
+
 
 # Cargar modelo entrenado
 modelo = joblib.load("model/modelo_huracanes.pkl")
 
 # Crear instancia de la app
 app = FastAPI(title="API de Predicción de Huracanes")
+
+app.add_middleware(
+       CORSMiddleware,
+       allow_origins=["*"],
+       allow_credentials=True,
+       allow_methods=["*"],
+       allow_headers=["*"],
+   )
 
 # Clase para entrada de datos
 class DatosHuracan(BaseModel):
@@ -96,14 +106,31 @@ def predecir_intensidad(datos: DatosHuracan):
 
         # Hacer predicción
         prediccion = modelo.predict(input_ordered)
+        categoria = clasificar_categoria_saffir_simpson(prediccion)
 
         return {
-            "prediccion_velocidad_viento": round(float(prediccion[0]), 2)
+            "prediccion_velocidad_viento": round(float(prediccion[0]), 2),
+            "categoria_saffir_simpson": categoria
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error interno al procesar la predicción: {str(e)}")
-
-
+    
+# Clasificar la categoría Saffir-Simpson
+def clasificar_categoria_saffir_simpson(viento_kt: float) -> str:
+    if viento_kt < 34:
+        return "Depresión tropical"
+    elif viento_kt < 64:
+        return "Tormenta tropical"
+    elif viento_kt < 83:
+        return "Huracán categoría 1"
+    elif viento_kt < 96:
+        return "Huracán categoría 2"
+    elif viento_kt < 113:
+        return "Huracán categoría 3"
+    elif viento_kt < 137:
+        return "Huracán categoría 4"
+    else:
+        return "Huracán categoría 5"
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)  
