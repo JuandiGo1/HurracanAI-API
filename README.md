@@ -3,6 +3,7 @@
 
 ## Ejemplos:
 
+```
 {
   "SEASON": 2023,
   "DIST2LAND": 1518,
@@ -32,3 +33,4 @@
   "hour": 0,
   "minute": 0
 }
+```
