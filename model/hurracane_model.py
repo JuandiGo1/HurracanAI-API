@@ -155,6 +155,12 @@ if 'USA_SSHS' in X.columns:
 if 'USA_PRES' in X.columns:
     cols_to_drop_from_X.append('USA_PRES')
     print("Eliminando 'USA_PRES' de las características (alta correlación inversa con velocidad del viento).")
+if 'SEASON' in X.columns:
+    cols_to_drop_from_X.append('SEASON')
+    print("Eliminando 'SEASON' de las características (no debe usarse como feature).")
+if 'year' in X.columns:
+    cols_to_drop_from_X.append('year')
+    print("Eliminando 'year' de las características (no debe usarse como feature).")
 
 if cols_to_drop_from_X:
     X = X.drop(columns=cols_to_drop_from_X)

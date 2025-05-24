@@ -24,7 +24,6 @@ app.add_middleware(
 
 # Clase para entrada de datos
 class DatosHuracan(BaseModel):
-    SEASON: int
     DIST2LAND: float
     LANDFALL: float
     USA_LAT: float
@@ -46,7 +45,6 @@ class DatosHuracan(BaseModel):
     USA_RECORD: str
     USA_STATUS: str
     NATURE: str
-    year: int
     month: int
     day: int
     hour: int
@@ -65,7 +63,6 @@ def predecir_intensidad(datos: DatosHuracan):
 
         # Generar diccionario base con las variables numéricas
         input_dict = {
-            "SEASON": datos.SEASON,
             "DIST2LAND": datos.DIST2LAND,
             "LANDFALL": datos.LANDFALL,
             "USA_LAT": datos.USA_LAT,
@@ -82,7 +79,6 @@ def predecir_intensidad(datos: DatosHuracan):
             "USA_R64_SE": datos.USA_R64_SE,
             "USA_R64_SW": datos.USA_R64_SW,
             "USA_R64_NW": datos.USA_R64_NW,
-            "year": datos.year,
             "month": datos.month,
             "day": datos.day,
             "hour": datos.hour,
